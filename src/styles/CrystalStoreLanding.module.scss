@@ -27,7 +27,7 @@
 .storeHeader {
   background-color: #232323;
   color: white;
-  padding: 4rem 1rem; // Reduced side padding for mobile
+  padding: 4rem 1rem;
   text-align: center;
 
   .headerContent {
@@ -40,7 +40,7 @@
 
   .mainTitle {
     font-family: "CG Times", serif;
-    font-size: clamp(2rem, 5vw, 3.5rem); // Responsive font size
+    font-size: clamp(2rem, 5vw, 3.5rem);
     letter-spacing: 4px;
     font-weight: 400;
     margin: 1rem 0;
@@ -150,7 +150,7 @@
   }
 }
 
-// Video Section Styles
+// * Video Section Styles * //
 .videoSection {
   padding: 4rem 2rem;
   background-color: var(--background-color);
@@ -287,70 +287,82 @@
 }
 
 .storeShowcase {
-  height: 60vh;
-  background-image: url("/src/assets/images/shop.png");
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  position: relative;
+  height: 80vh;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
   margin: 4rem 0;
 
-  &::before {
-    content: "";
+  .videoBackground {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      rgba(218, 165, 32, 0.7),
-      // Goldenrod color
-      rgba(255, 215, 0, 0.4) // Gold color
-    );
-    // Add a subtle shimmer effect
-    backdrop-filter: brightness(1.1) contrast(1.1);
+    width: 100%;
+    height: 100%;
     z-index: 1;
+
+    video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      animation: pan 20s alternate infinite;
+    }
   }
 
-  // Add a subtle crystalline texture overlay
-  &::after {
-    content: "";
+  @keyframes pan {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.1);
+    }
+  }
+
+  .overlay {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(
-      circle at center,
-      rgba(255, 255, 255, 0.1) 0%,
-      rgba(255, 223, 0, 0.05) 100%
-    );
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.2));
     z-index: 2;
-    pointer-events: none;
+    backdrop-filter: blur(1px);
   }
 
-  // Make the text elements appear above both overlays
-  * {
+  .content {
     position: relative;
     z-index: 3;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  }
-
-  @media (max-width: 768px) {
-    height: 80vh;
-    background-attachment: scroll;
+    text-align: center;
+    padding: 3rem;
+    max-width: 800px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 1rem;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
 
     h2 {
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      color: white;
     }
 
     p {
-      font-size: clamp(1rem, 3vw, 1.25rem);
-      padding: 0 1rem;
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.5);
+      transform: translateY(-2px);
     }
   }
 }
@@ -395,7 +407,7 @@
 }
 
 section {
-  padding: 3rem 1rem;
+  padding: 0 2rem;
 
   @media (max-width: 768px) {
     padding: 2rem 1rem;

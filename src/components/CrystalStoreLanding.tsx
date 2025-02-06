@@ -1,4 +1,4 @@
-import { useState, CSSProperties } from "react";
+import { useState, CSSProperties, useRef } from "react";
 import { Sun, Moon, MapPin, Clock, Mail } from "lucide-react";
 import moduleStyles from "../styles/CrystalStoreLanding.module.scss";
 
@@ -23,13 +23,18 @@ interface Testimonial {
 }
 
 const CrystalStoreLanding = () => {
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [isDarkTheme, setIsDarkTheme] = useState(() => {
+    const saved = localStorage.getItem("theme");
+    return saved === "dark";
+  });
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [hoveredTestimonial, setHoveredTestimonial] = useState<number | null>(
     null
   );
   const [hoveredButton, setHoveredButton] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   // Theme styles that will be used throughout the component
   const theme = {
@@ -423,9 +428,20 @@ const CrystalStoreLanding = () => {
       </section>
       {/* Visit Store Section */}
       <section className={moduleStyles.storeShowcase}>
-        <div style={styles.storeContent}>
-          <h2 style={styles.storeTitle}>Visit Our Sausalito Gallery</h2>
-          <p style={styles.storeDescription}>
+        <div className={moduleStyles.videoBackground}>
+          <video ref={videoRef} muted playsInline loop preload="auto" autoPlay>
+            <source
+              src="/src/assets/videos/shop_right_pan_reverse.mp4"
+              type="video/mp4"
+            />
+          </video>
+        </div>
+
+        <div className={moduleStyles.overlay} />
+
+        <div className={moduleStyles.content}>
+          <h2>Visit Our Sausalito Gallery</h2>
+          <p>
             Experience our curated collection of Swarovski, Glass Art, and
             premium crystals in person
           </p>
@@ -434,7 +450,7 @@ const CrystalStoreLanding = () => {
             style={{
               ...styles.button,
               backgroundColor: "transparent",
-              border: "2px solid white",
+              border: "2px solid rgba(255, 255, 255, 0.8)",
               marginTop: "2rem",
             }}
             onClick={handleGetDirections}
