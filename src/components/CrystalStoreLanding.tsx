@@ -452,7 +452,7 @@ const CrystalStoreLanding = () => {
       <section
         ref={productSectionRef}
         style={styles.productSection}
-        className={`${moduleStyles.productSection} ${animationStyles.crystalShine}`}
+        className={`${moduleStyles.productSection} ${animationStyles.crystalShine} ${animationStyles.fadeIn}`}
       >
         <h2 style={styles.sectionTitle} className={moduleStyles.sectionTitle}>
           Featured Crystals
@@ -532,7 +532,7 @@ const CrystalStoreLanding = () => {
       {/* Video Showcase Section */}
       <section
         ref={videoSectionRef}
-        className={`${moduleStyles.videoSection} ${animationStyles.crystalShine}`}
+        className={`${moduleStyles.videoSection} ${animationStyles.crystalShine}  ${animationStyles.fadeIn}`}
         style={styles.videoBackground}
         data-theme={isDarkTheme ? "dark" : "light"}
       >
@@ -570,7 +570,7 @@ const CrystalStoreLanding = () => {
       <section
         ref={testimonialSectionRef}
         style={styles.testimonialSection}
-        className={`${moduleStyles.testimonialSection}`}
+        className={`${moduleStyles.testimonialSection}  ${animationStyles.fadeIn}`}
       >
         <h2 style={styles.sectionTitle}>What Our Customers Say</h2>
         <div style={styles.testimonialGrid}>

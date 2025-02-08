@@ -17,7 +17,7 @@ export const Splash = () => {
       <div className={styles.logo}>
         {/* <span className={styles.crystal}>◇</span> */}
         <CrystalLoader />
-        <h1 className={styles.title}>Collector's Gallery Sausalito</h1>
+        <h1 className={styles.title}>Collector's Gallery</h1>
       </div>
       <div className={styles.loader} />
     </div>
