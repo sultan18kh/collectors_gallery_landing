@@ -1,0 +1,68 @@
+.splash {
+  position: fixed;
+  inset: 0;
+  background: #232323;
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  animation: fadeOut 0.5s ease-out forwards;
+  animation-delay: 1.5s;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  animation: scaleIn 0.5s ease-out;
+
+  .crystal {
+    font-size: 8rem;
+    animation: rotate 2s linear infinite;
+  }
+}
+
+.title {
+  font-size: 2rem;
+  color: #fff;
+}
+
+.loader {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #fff, transparent);
+  animation: scan 1s linear infinite;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes scan {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
