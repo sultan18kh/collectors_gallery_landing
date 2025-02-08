@@ -1,0 +1,76 @@
+.splash {
+  position: fixed;
+  inset: 0;
+  background: #232323;
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  animation: fadeOut 0.5s ease-out forwards;
+  animation-delay: 1.5s;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  animation: scaleIn 0.5s ease-out;
+
+  .crystal {
+    font-size: 8rem;
+    animation: rotate 2s linear infinite;
+  }
+}
+
+.title {
+  color: #fff;
+  text-align: center;
+  font-family: "CG Times", serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: 2px;
+  font-weight: 400;
+  margin: 1rem 0;
+  text-transform: uppercase;
+  margin-left: 4rem;
+  margin-right: 4rem;
+}
+
+.loader {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #fff, transparent);
+  animation: scan 1s linear infinite;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes scan {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
