@@ -1,6 +1,11 @@
-import { useState, CSSProperties, useRef } from "react";
+import { useState, CSSProperties, useRef, useEffect } from "react";
 import { Sun, Moon, MapPin, Clock, Mail } from "lucide-react";
 import moduleStyles from "../styles/CrystalStoreLanding.module.scss";
+import animationStyles from "../styles/animations.module.scss";
+import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
+import { scrollToSection } from "../utils/scrollUtils";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 // Type for our style object
 type StyleDictionary = {
@@ -34,9 +39,41 @@ const CrystalStoreLanding = () => {
   const [hoveredButton, setHoveredButton] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
 
+  // * Visit Video
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Theme styles that will be used throughout the component
+  // * Animations
+  const productSectionRef = useRef<HTMLDivElement>(null);
+  const testimonialSectionRef = useRef<HTMLDivElement>(null);
+  const videoSectionRef = useRef<HTMLDivElement>(null);
+
+  useIntersectionObserver(productSectionRef);
+  useIntersectionObserver(testimonialSectionRef);
+  useIntersectionObserver(videoSectionRef);
+
+  useEffect(() => {
+    window.history.scrollRestoration = "manual";
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          videoRef.current?.play();
+        } else {
+          videoRef.current?.pause();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   const theme = {
     colors: {
       light: {
@@ -105,6 +142,9 @@ const CrystalStoreLanding = () => {
   const styles: StyleDictionary = {
     container: {
       minHeight: "100vh",
+      width: "100%",
+      maxWidth: "100%",
+      position: "relative",
       backgroundColor: currentTheme.background,
       color: currentTheme.text,
       transition: "background-color 0.3s ease, color 0.3s ease",
@@ -149,7 +189,6 @@ const CrystalStoreLanding = () => {
       color: currentTheme.text,
     } as CSSProperties,
     productSection: {
-      padding: "4rem 2rem",
       backgroundColor: currentTheme.background,
     },
     sectionTitle: {
@@ -177,11 +216,6 @@ const CrystalStoreLanding = () => {
       transform: "translateY(-10px) scale(1.02)",
       boxShadow: `0 20px 30px ${currentTheme.shadow}`,
     } as CSSProperties,
-    productImage: {
-      width: "100%",
-      height: "200px",
-      objectFit: "cover",
-    },
     productContent: {
       padding: "1.5rem",
     },
@@ -223,7 +257,6 @@ const CrystalStoreLanding = () => {
       margin: "0 auto 1rem auto",
     },
     testimonialSection: {
-      padding: "4rem 2rem",
       backgroundColor: currentTheme.background,
     },
     testimonialGrid: {
@@ -364,15 +397,17 @@ const CrystalStoreLanding = () => {
           <h1 className={moduleStyles.mainTitle}>Collector's Gallery</h1>
           <div className={moduleStyles.brandRow}>
             <span className={moduleStyles.brandText}>ALEX AND ANI</span>
-            <img
+            <LazyLoadImage
               src="/src/assets/images/logos/pandora-logo.png"
               alt="Pandora"
+              effect="blur"
               className={moduleStyles.brandLogo}
             />
             <div className={moduleStyles.swarovskiWrapper}>
-              <img
+              <LazyLoadImage
                 src="/src/assets/images/logos/swarovski-logo.svg"
                 alt="Swarovski"
+                effect="blur"
                 className={moduleStyles.swarovskiImage}
               />
               <span className={moduleStyles.alignmentLine}></span>
@@ -397,8 +432,14 @@ const CrystalStoreLanding = () => {
         </div>
       </header>
       {/* Product Section */}
-      <section style={styles.productSection}>
-        <h2 style={styles.sectionTitle}>Featured Crystals</h2>
+      <section
+        ref={productSectionRef}
+        style={styles.productSection}
+        className={`${moduleStyles.productSection} ${animationStyles.crystalShine} ${animationStyles.fadeIn}`}
+      >
+        <h2 style={styles.sectionTitle} className={moduleStyles.sectionTitle}>
+          Featured Crystals
+        </h2>
         <div style={styles.productGrid}>
           {featuredProducts.map((product) => (
             <div
@@ -409,11 +450,13 @@ const CrystalStoreLanding = () => {
               }}
               onMouseEnter={() => setHoveredCard(product.id)}
               onMouseLeave={() => setHoveredCard(null)}
+              onClick={() => scrollToSection("contact")}
             >
-              <img
+              <LazyLoadImage
                 src={product.imageUrl}
                 alt={product.name}
-                style={styles.productImage}
+                effect="blur"
+                className={moduleStyles.productImage}
               />
               <div style={styles.productContent}>
                 <h3 style={styles.productTitle}>{product.name}</h3>
@@ -429,7 +472,14 @@ const CrystalStoreLanding = () => {
       {/* Visit Store Section */}
       <section className={moduleStyles.storeShowcase}>
         <div className={moduleStyles.videoBackground}>
-          <video ref={videoRef} muted playsInline loop preload="auto" autoPlay>
+          <video
+            preload="metadata"
+            ref={videoRef}
+            muted
+            playsInline
+            loop
+            autoPlay
+          >
             <source
               src="/src/assets/videos/shop_right_pan_reverse.mp4"
               type="video/mp4"
@@ -461,7 +511,8 @@ const CrystalStoreLanding = () => {
       </section>
       {/* Video Showcase Section */}
       <section
-        className={moduleStyles.videoSection}
+        ref={videoSectionRef}
+        className={`${moduleStyles.videoSection} ${animationStyles.crystalShine}`}
         style={styles.videoBackground}
         data-theme={isDarkTheme ? "dark" : "light"}
       >
@@ -479,6 +530,7 @@ const CrystalStoreLanding = () => {
                 muted
                 loop
                 playsInline
+                preload="metadata"
                 poster="/api/placeholder/400/300"
               >
                 <source src={video.source} type="video/mp4" />
@@ -495,7 +547,11 @@ const CrystalStoreLanding = () => {
         </div>
       </section>
       {/* Testimonials Section */}
-      <section style={styles.testimonialSection}>
+      <section
+        ref={testimonialSectionRef}
+        style={styles.testimonialSection}
+        className={`${moduleStyles.testimonialSection} ${animationStyles.fadeIn}`}
+      >
         <h2 style={styles.sectionTitle}>What Our Customers Say</h2>
         <div style={styles.testimonialGrid}>
           {testimonials.map((testimonial) => (
@@ -526,7 +582,7 @@ const CrystalStoreLanding = () => {
         </div>
       </section>
       {/* Contact Section */}
-      <section style={styles.contactSection}>
+      <section id="contact" style={styles.contactSection}>
         <h2 style={styles.sectionTitle}>Visit Us</h2>
         <div style={styles.contactGrid}>
           <div style={styles.contactCard}>
