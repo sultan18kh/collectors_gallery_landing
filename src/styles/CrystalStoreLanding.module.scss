@@ -169,15 +169,25 @@
 }
 
 .testimonialCard {
-  background-color: var(--card-bg);
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 4px 6px var(--shadow);
-  transition: all 0.3s ease;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: transform 0.5s ease;
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px var(--shadow);
+    transform: rotateY(10deg) rotateX(5deg);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(125deg, transparent, rgba(255, 255, 255, 0.2));
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
 }
 

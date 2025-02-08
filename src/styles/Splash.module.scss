@@ -23,8 +23,16 @@
 }
 
 .title {
-  font-size: 2rem;
   color: #fff;
+  text-align: center;
+  font-family: "CG Times", serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: 2px;
+  font-weight: 400;
+  margin: 1rem 0;
+  text-transform: uppercase;
+  margin-left: 4rem;
+  margin-right: 4rem;
 }
 
 .loader {

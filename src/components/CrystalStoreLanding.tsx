@@ -1,7 +1,8 @@
 import { useState, CSSProperties, useRef, useEffect } from "react";
 import { Sun, Moon, MapPin, Clock, Mail } from "lucide-react";
 import moduleStyles from "../styles/CrystalStoreLanding.module.scss";
-import animationStyles from "../styles/animations.module.scss";
+import animationStyles from "../styles/Animations.module.scss";
+import crystalStyles from "../styles/CrystalEffects.module.scss";
 import { useIntersectionObserver } from "../hooks/useIntersectionObserver";
 import { scrollToSection } from "../utils/scrollUtils";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -72,6 +73,22 @@ const CrystalStoreLanding = () => {
     }
 
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrolled = window.scrollY;
+      const parallaxElements = document.querySelectorAll(".parallax");
+
+      parallaxElements.forEach((element) => {
+        const speed = parseFloat(element.getAttribute("data-speed") || "0.5");
+        const offset = scrolled * speed;
+        (element as HTMLElement).style.transform = `translateY(${offset}px)`;
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const theme = {
@@ -435,7 +452,7 @@ const CrystalStoreLanding = () => {
       <section
         ref={productSectionRef}
         style={styles.productSection}
-        className={`${moduleStyles.productSection} ${animationStyles.crystalShine} ${animationStyles.fadeIn}`}
+        className={`${moduleStyles.productSection} ${animationStyles.crystalShine}`}
       >
         <h2 style={styles.sectionTitle} className={moduleStyles.sectionTitle}>
           Featured Crystals
@@ -448,6 +465,7 @@ const CrystalStoreLanding = () => {
                 ...styles.productCard,
                 ...(hoveredCard === product.id ? styles.productCardHover : {}),
               }}
+              className={`${moduleStyles.productCard} ${crystalStyles.crystalCard}`}
               onMouseEnter={() => setHoveredCard(product.id)}
               onMouseLeave={() => setHoveredCard(null)}
               onClick={() => scrollToSection("contact")}
@@ -489,7 +507,9 @@ const CrystalStoreLanding = () => {
 
         <div className={moduleStyles.overlay} />
 
-        <div className={moduleStyles.content}>
+        <div
+          className={`${moduleStyles.content} ${crystalStyles.glassmorphism}`}
+        >
           <h2>Visit Our Sausalito Gallery</h2>
           <p>
             Experience our curated collection of Swarovski, Glass Art, and
@@ -550,7 +570,7 @@ const CrystalStoreLanding = () => {
       <section
         ref={testimonialSectionRef}
         style={styles.testimonialSection}
-        className={`${moduleStyles.testimonialSection} ${animationStyles.fadeIn}`}
+        className={`${moduleStyles.testimonialSection}`}
       >
         <h2 style={styles.sectionTitle}>What Our Customers Say</h2>
         <div style={styles.testimonialGrid}>
@@ -568,6 +588,7 @@ const CrystalStoreLanding = () => {
                     ? `0 10px 20px ${currentTheme.shadow}`
                     : `0 4px 6px ${currentTheme.shadow}`,
               }}
+              className={moduleStyles.testimonialCard}
               onMouseEnter={() => setHoveredTestimonial(testimonial.id)}
               onMouseLeave={() => setHoveredTestimonial(null)}
             >

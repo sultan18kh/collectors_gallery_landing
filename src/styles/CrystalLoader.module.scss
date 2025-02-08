@@ -1,0 +1,36 @@
+.loaderContainer {
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+}
+
+.crystal {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  animation: rotate 2s linear infinite;
+
+  .facet {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.5));
+    transform-origin: center;
+
+    &:nth-child(1) {
+      transform: rotate(0deg);
+    }
+    &:nth-child(2) {
+      transform: rotate(120deg);
+    }
+    &:nth-child(3) {
+      transform: rotate(240deg);
+    }
+  }
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,4 +1,3 @@
-// * Base fade-in animation
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -10,7 +9,6 @@
   }
 }
 
-// * Scroll-triggered animation classes
 .fadeIn {
   opacity: 0;
   transform: translateY(30px);
